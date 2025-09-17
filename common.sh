@@ -34,7 +34,6 @@ app_setup(){
     unzip /tmp/$app_name.zip &>>$LOG_FILE
     VALIDATE $? "unzipping $app_name"
 }
-
 nodejs_setup(){
     dnf module disable nodejs -y &>>$LOG_FILE
     VALIDATE $? "Disabling default nodejs"
@@ -48,7 +47,6 @@ nodejs_setup(){
     npm install &>>$LOG_FILE
     VALIDATE $? "Installing Dependencies"
 }
-
 systemd_setup(){
     cp $SCRIPT_DIR/$app_name.service /etc/systemd/system/$app_name.service
     VALIDATE $? "Copying $app_name service"
@@ -70,14 +68,14 @@ check_root(){
 
 # validate functions takes input as exit status, what command they tired to install 
 VALIDATE(){
-if [ $1 -eq 0 ]
-then 
-    echo  -e "$2 is ... $G SUCCESS $N" | tee -a  $LOG_FILE
-else 
-    echo -e "$2 is ... $R FAILURE $N"  | tee -a $LOG_FILE
-    exit 1
-fi    
-} 
+    if [ $1 -eq 0 ]
+    then 
+        echo  -e "$2 is ... $G SUCCESS $N" | tee -a  $LOG_FILE
+    else 
+        echo -e "$2 is ... $R FAILURE $N"  | tee -a $LOG_FILE
+        exit 1
+    fi    
+ } 
 
 print_time(){
     END_TIME=$(date +%s)
